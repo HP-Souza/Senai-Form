@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Formulário de Inscrição</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <main>
+      <div class="container">
+        <h1>FORMULÁRIO DE INSCRIÇÃO</h1>
+        <form action="" method="get">
+          <label for="">Nome</label>
+          <input type="text" id="nome" name="nome" required /><br />
+
+          <label for="">Telefone</label>
+          <input type="text" id="telefone" name="endereco" required /><br />
+
+          <label
+            >Cep:
+            <input
+              name="cep"
+              type="text"
+              id="cep"
+              value=""
+              size="10"
+              maxlength="9"
+              onblur="pesquisacep(this.value);" /></label
+          ><br />
+          <label>Rua: <input name="rua" type="text" id="rua" size="60" /></label
+          ><br />
+          <label
+            >Bairro:
+            <input name="bairro" type="text" id="bairro" size="40" /></label
+          ><br />
+          <label
+            >Cidade:
+            <input name="cidade" type="text" id="cidade" size="40" /></label
+          ><br />
+
+          <!-- Seleção de cursos -->
+
+          <label for="">Cursos Profissionalizantes</label>
+          <select name="cursos" id="cursos">
+            <option value="curso1">Informática Básica</option>
+            <option value="curso2">Desenvolvedor de Sistemas</option>
+            <option value="curso3">Interpret de Libras</option>
+            <option value="curso4">Pintor de Muro</option></select
+          ><br /><br />
+
+          <!-- Gênero Radio Button -->
+
+          <label for="">Gênero:</label><br />
+          <input type="radio" id="masculino" name="genero" required />
+          <label for="masculino">Masculino</label>
+
+          <input type="radio" id="feminino" name="genero" required />
+          <label for="feminino">Feminino</label>
+
+          <input type="radio" id="personalizado" name="genero" required />
+          <label for="personalizado">Personalizado</label>
+          <input type="text" id="texto-genero" display="none" />
+          <label for="texto-genero"></label><br /><br />
+
+          <!-- Unidade Operacinal -->
+
+          <label for="">Unidade Operacional</label><br />
+          <input
+            type="checkbox"
+            id="cetafaju"
+            name="tipo-curso"
+            value="CETAFAJU"
+          />
+          <label for="cetafaju">CETAFAJU</label>
+
+          <input type="checkbox" id="cetcc" name="tipo-curso" value="CETCC" />
+          <label for="cetcc">CETCC</label>
+
+          <input type="checkbox" id="ceticc" name="tipo-curso" value="CETICC" />
+          <label for="ceticc">CETICC</label>
+
+          <input
+            type="checkbox"
+            id="cetafest"
+            name="tipo-curso"
+            value="CETAFEST"
+          />
+          <label for="cetafest">CETAFEST</label><br /><br />
+          <button>Enviar</button>
+        </form>
+      </div>
+    </main>
+    <script src="main.js"></script>
+  </body>
+
+  <head>
+    <title>ViaCEP Webservice</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script>
+      function limpa_formulário_cep() {
+        document.getElementById("rua").value = "";
+        document.getElementById("bairro").value = "";
+        document.getElementById("cidade").value = "";
+        document.getElementById("uf").value = "";
+        document.getElementById("ibge").value = "";
+      }
+
+      function meu_callback(conteudo) {
+        if (!("erro" in conteudo)) {
+          document.getElementById("rua").value = conteudo.logradouro;
+          document.getElementById("bairro").value = conteudo.bairro;
+          document.getElementById("cidade").value = conteudo.localidade;
+        } 
+        else {
+          limpa_formulário_cep();
+          alert("CEP não encontrado.");
+        }
+      }
+
+      function pesquisacep(valor) {
+        var cep = valor.replace(/\D/g, "");
+
+        if (cep != "") {
+          var validacep = /^[0-9]{8}$/;
+
+          if (validacep.test(cep)) {
+            document.getElementById("rua").value = "...";
+            document.getElementById("bairro").value = "...";
+            document.getElementById("cidade").value = "...";
+
+            var script = document.createElement("script");
+
+            script.src =
+              "https://viacep.com.br/ws/" +
+              cep +
+              "/json/?callback=meu_callback";
+
+            document.body.appendChild(script);
+          } 
+          else {
+            limpa_formulário_cep();
+            alert("Formato de CEP inválido.");
+          }
+        } 
+        else {
+          limpa_formulário_cep();
+        }
+      }
+    </script>
+  </head>
+</html>
